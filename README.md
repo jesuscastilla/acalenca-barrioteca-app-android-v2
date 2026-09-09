@@ -44,8 +44,8 @@ Salidas:
   + `versionCode 34` y firma con el mismo `signing.keystore` (`my-key-alias`).
   El keystore y `keystore.properties` ya están copiados localmente (NO versionados en Git).
 
-## Pendiente
+## Repositorio
 
-- Crear el repositorio remoto en GitHub.
+- `https://github.com/jesuscastilla/acalenca-barrioteca-app-android-v2`
 
 > Contexto general del proyecto en `g:\GITHUB\CONTEXT.md`.

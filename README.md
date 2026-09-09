@@ -38,12 +38,14 @@ Salidas:
 - Debug: `app/build/outputs/apk/debug/app-debug.apk`
 - Release: `app/build/outputs/apk/release/app-release.apk`
 
-## Decisiones pendientes
+## Decisiones ya tomadas
 
-- `applicationId`: de momento se usa `com.lebeche.barrioteca` + `versionCode 34`
-  (para poder publicar como actualización en Google Play). Pendiente de confirmar.
-- Firma: falta copiar `signing.keystore` / `keystore.properties` a esta carpeta
-  para compilar el release firmado.
-- Repositorio remoto en GitHub: pendiente de crear.
+- Publicación como **actualización** de la app actual: `applicationId com.lebeche.barrioteca`
+  + `versionCode 34` y firma con el mismo `signing.keystore` (`my-key-alias`).
+  El keystore y `keystore.properties` ya están copiados localmente (NO versionados en Git).
+
+## Pendiente
+
+- Crear el repositorio remoto en GitHub.
 
 > Contexto general del proyecto en `g:\GITHUB\CONTEXT.md`.

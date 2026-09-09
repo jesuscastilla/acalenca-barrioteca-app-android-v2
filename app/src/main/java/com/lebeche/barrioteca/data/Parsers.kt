@@ -8,6 +8,12 @@ fun parseLoans(list: JSONArray?): List<Loan> {
     return buildList {
         for (i in 0 until list.length()) {
             val j = list.optJSONObject(i) ?: continue
+            val imagePath = j.optString("image")
+            val fullImageUrl = if (imagePath.isNotEmpty() && !imagePath.startsWith("http")) {
+                "https://pelotxo.synology.me$imagePath"
+            } else {
+                imagePath
+            }
             add(
                 Loan(
                     loanId = j.optString("loan_id"),
@@ -16,7 +22,7 @@ fun parseLoans(list: JSONArray?): List<Loan> {
                     dueDate = j.optString("due_date"),
                     title = j.optString("title", "Título no disponible"),
                     isbn = j.optString("isbn"),
-                    image = j.optString("image")
+                    image = fullImageUrl
                 )
             )
         }
@@ -29,6 +35,12 @@ fun parseCatalog(list: JSONArray?): List<CatalogBook> {
     return buildList {
         for (i in 0 until list.length()) {
             val j = list.optJSONObject(i) ?: continue
+            val imagePath = j.optString("image")
+            val fullImageUrl = if (imagePath.isNotEmpty() && !imagePath.startsWith("http")) {
+                "https://pelotxo.synology.me$imagePath"
+            } else {
+                imagePath
+            }
             add(
                 CatalogBook(
                     id = j.optString("id"),
@@ -36,7 +48,7 @@ fun parseCatalog(list: JSONArray?): List<CatalogBook> {
                     author = j.optString("author", "Autora Desconocida"),
                     isbn = j.optString("isbn"),
                     status = j.optString("status", "disponible"),
-                    image = j.optString("image"),
+                    image = fullImageUrl,
                     notes = j.optString("notes"),
                     itemCode = j.optString("item_code")
                 )

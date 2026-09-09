@@ -41,8 +41,15 @@ Salidas:
 ## Decisiones ya tomadas
 
 - Publicación como **actualización** de la app actual: `applicationId com.lebeche.barrioteca`
-  + `versionCode 34` y firma con el mismo `signing.keystore` (`my-key-alias`).
+  + `versionCode 35` y firma con el mismo `signing.keystore` (`my-key-alias`).
   El keystore y `keystore.properties` ya están copiados localmente (NO versionados en Git).
+
+## Últimos cambios (v3.0.0, Code 35)
+
+- Modificado el diseño del icono (`ic_launcher.xml` con `<inset>`) para que se muestre centrado y sin letras.
+- Añadida lógica en `MainActivity.kt` (Google Play In-App Updates) para forzar la actualización de la app si hay una nueva versión (Inmediata).
+- Limpiadas las `SharedPreferences` al detectarse una nueva actualización para que fuerce a las usuarias a re-iniciar sesión.
+- Solucionado el problema con la carga de portadas (`Parsers.kt`) en el catálogo prefijando la URL base de la imagen.
 
 ## Repositorio
 

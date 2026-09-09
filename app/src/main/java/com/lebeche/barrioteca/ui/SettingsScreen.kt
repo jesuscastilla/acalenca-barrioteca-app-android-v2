@@ -25,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import com.lebeche.barrioteca.data.Member
 import com.lebeche.barrioteca.sync.SyncEngine
@@ -100,9 +103,13 @@ fun SettingsScreen(member: Member, onLogout: () -> Unit) {
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            "Versión nativa de la Barrioteca Acalencá. " +
-                "Gestiona préstamos y devoluciones, y se sincroniza con SLiMS " +
-                "para avisarte de vencimientos y novedades.",
+            text = buildAnnotatedString {
+                append("Versión nativa de la Barrioteca Acalencá.\n\nTodos los datos se sincronizan ")
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append("cifrados")
+                }
+                append(" en nuestro propio servidor autogestionado. Nada se sube a internet ni se comparte con terceros.")
+            },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

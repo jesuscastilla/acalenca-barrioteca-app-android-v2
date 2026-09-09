@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -141,7 +142,7 @@ private fun BookRow(book: CatalogBook, onClick: () -> Unit) {
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = if (book.status == "disponible")
-                        MaterialTheme.colorScheme.primary
+                        Color(0xFF2E7D32) // Verde oscuro
                     else MaterialTheme.colorScheme.error
                 )
             }

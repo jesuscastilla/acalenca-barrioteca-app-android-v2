@@ -19,7 +19,7 @@ android {
         applicationId 'com.lebeche.barrioteca'
         minSdk 28
         targetSdk 36
-        versionCode 34
+        versionCode 35
         versionName '3.0.0'
 
         // URL del proxy PHP que expone la API de SLiMS.
@@ -96,4 +96,7 @@ dependencies {
     implementation 'androidx.camera:camera-lifecycle:1.4.1'
     implementation 'androidx.camera:camera-view:1.4.1'
     implementation 'com.google.mlkit:barcode-scanning:17.3.0'
+
+    // Google Play In-App Updates
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
 }

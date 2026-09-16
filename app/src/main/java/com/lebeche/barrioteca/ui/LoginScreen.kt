@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import com.lebeche.barrioteca.data.Member
 import com.lebeche.barrioteca.data.Prefs
 import com.lebeche.barrioteca.data.SlmsApi
@@ -160,6 +164,22 @@ fun LoginScreen(onLoggedIn: (Member) -> Unit) {
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyMedium
             )
+        }
+
+        Spacer(Modifier.height(32.dp))
+
+        TextButton(onClick = {
+            Toast.makeText(context, "Contacta con la asamblea para recuperar tu ID", Toast.LENGTH_LONG).show()
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:monderas@corrientelebeche.es")
+            }
+            try {
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                // Ignore if no email client is available
+            }
+        }) {
+            Text("He olvidado mi ID de usuaria")
         }
 
         Spacer(Modifier.height(48.dp))

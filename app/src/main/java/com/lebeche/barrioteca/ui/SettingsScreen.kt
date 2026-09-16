@@ -1,5 +1,7 @@
 package com.lebeche.barrioteca.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -85,6 +88,21 @@ fun SettingsScreen(member: Member, onLogout: () -> Unit) {
         ) {
             Icon(Icons.Filled.Sync, contentDescription = null)
             Text("  Sincronizar ahora")
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        OutlinedButton(
+            onClick = {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:monderas@corrientelebeche.es")
+                }
+                context.startActivity(intent)
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Filled.Email, contentDescription = null)
+            Text("  Contactar administración")
         }
 
         Spacer(Modifier.height(8.dp))

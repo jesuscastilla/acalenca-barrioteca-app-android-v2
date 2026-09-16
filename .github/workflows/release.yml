@@ -44,7 +44,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Build APK + AAB
-        run: ./gradlew assembleRelease bundleRelease --no-daemon
+        run: chmod +x gradlew && ./gradlew assembleRelease bundleRelease --no-daemon
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2

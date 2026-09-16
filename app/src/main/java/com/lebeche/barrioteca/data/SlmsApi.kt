@@ -94,7 +94,7 @@ object SlmsApi {
 
     private fun String.toHttpUrl(): HttpUrl =
         toHttpUrlOrNull()
-            ?: "https://pelotxo.synology.me/barrioteca/api-proxy.php".toHttpUrlOrNull()!!
+            ?: BuildConfig.API_BASE_URL.toHttpUrlOrNull()!!
 
     // ── Acciones ────────────────────────────────────────────────────
     suspend fun verifyMember(memberId: String): ApiResult =

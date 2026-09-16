@@ -1,5 +1,6 @@
 package com.lebeche.barrioteca.data
 
+import com.lebeche.barrioteca.BuildConfig
 import org.json.JSONArray
 
 /** Convierte la respuesta `member-loans` (array JSON) en una lista de préstamos. */
@@ -10,7 +11,7 @@ fun parseLoans(list: JSONArray?): List<Loan> {
             val j = list.optJSONObject(i) ?: continue
             val imagePath = j.optString("image")
             val fullImageUrl = if (imagePath.isNotEmpty() && !imagePath.startsWith("http")) {
-                "https://pelotxo.synology.me$imagePath"
+                BuildConfig.SITE_BASE_URL + imagePath
             } else {
                 imagePath
             }
@@ -37,7 +38,7 @@ fun parseCatalog(list: JSONArray?): List<CatalogBook> {
             val j = list.optJSONObject(i) ?: continue
             val imagePath = j.optString("image")
             val fullImageUrl = if (imagePath.isNotEmpty() && !imagePath.startsWith("http")) {
-                "https://pelotxo.synology.me$imagePath"
+                BuildConfig.SITE_BASE_URL + imagePath
             } else {
                 imagePath
             }

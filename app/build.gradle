@@ -19,12 +19,13 @@ android {
         applicationId 'com.lebeche.barrioteca'
         minSdk 28
         targetSdk 36
-        versionCode 36
-        versionName '3.1.0'
+        versionCode 37
+        versionName '3.2.0'
 
-        // URL del proxy PHP que expone la API de SLiMS.
-        // Se centraliza aqui para no hardcodearla por todo el codigo.
-        buildConfigField "String", "API_BASE_URL", "\"https://pelotxo.synology.me/barrioteca/api-proxy.php\""
+        // Dominio principal y URL del proxy PHP que expone la API de SLiMS.
+        // Se centralizan aqui para no hardcodearlas por todo el codigo.
+        buildConfigField "String", "SITE_BASE_URL", "\"https://www.corrientelebeche.es\""
+        buildConfigField "String", "API_BASE_URL", "\"https://www.corrientelebeche.es/barrioteca/api-proxy.php\""
     }
 
     signingConfigs {

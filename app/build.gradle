@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.compose'
 }
 
@@ -12,15 +11,15 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace 'com.lebeche.barrioteca'
+    namespace = 'com.lebeche.barrioteca'
     compileSdk 36
 
     defaultConfig {
         applicationId 'com.lebeche.barrioteca'
         minSdk 28
         targetSdk 36
-        versionCode 38
-        versionName '3.2.1'
+        versionCode 40
+        versionName '3.2.2'
 
         // Dominio principal y URL del proxy PHP que expone la API de SLiMS.
         // Se centralizan aqui para no hardcodearlas por todo el codigo.
@@ -42,10 +41,10 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
+                signingConfig = signingConfigs.release
             }
         }
     }
@@ -56,19 +55,14 @@ android {
     }
 
     buildFeatures {
-        compose true
-        buildConfig true
+        compose = true
+        buildConfig = true
     }
 
     lint {
-        checkReleaseBuilds false
+        checkReleaseBuilds = false
     }
-}
 
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
-    }
 }
 
 dependencies {
@@ -101,3 +95,18 @@ dependencies {
     // Google Play In-App Updates
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
 }
+
+// Evita INSTALL_BASELINE_PROFILE_FAILED al instalar el build release en emuladores:
+// androidx.profileinstaller embebe un "baseline profile" que falla en x86/x86_64.
+configurations.configureEach {
+    exclude group: 'androidx.profileinstaller', module: 'profileinstaller'
+}
+
+// No genera baseline/art profiles (evita que se embeban en el APK release).
+tasks.configureEach {
+    if (name.contains("ArtProfile") || name.contains("StartupProfile")) {
+        enabled = false
+    }
+}
+
+

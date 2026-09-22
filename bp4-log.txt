@@ -1,0 +1,53 @@
+> Task :baselineprofile:preBuild UP-TO-DATE
+> Task :baselineprofile:preBenchmarkReleaseBuild UP-TO-DATE
+> Task :baselineprofile:checkTestedAppObfuscationBenchmarkRelease
+> Task :baselineprofile:generateBenchmarkReleaseResources
+> Task :baselineprofile:packageBenchmarkReleaseResources
+> Task :baselineprofile:processBenchmarkReleaseNavigationResources
+> Task :baselineprofile:generateBenchmarkReleaseAssets UP-TO-DATE
+> Task :baselineprofile:javaPreCompileBenchmarkRelease
+> Task :baselineprofile:parseBenchmarkReleaseLocalResources
+> Task :baselineprofile:mergeBenchmarkReleaseAssets
+> Task :baselineprofile:generateBenchmarkReleaseRFile
+> Task :baselineprofile:compressBenchmarkReleaseAssets
+> Task :baselineprofile:generateBenchmarkReleaseGlobalSynthetics
+> Task :baselineprofile:desugarBenchmarkReleaseFileDependencies
+> Task :baselineprofile:checkBenchmarkReleaseDuplicateClasses
+> Task :baselineprofile:mapBenchmarkReleaseSourceSetPaths
+> Task :baselineprofile:checkBenchmarkReleaseAarMetadata
+
+> Task :baselineprofile:compileBenchmarkReleaseKotlin
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:3:33 Unresolved reference 'BaselineProfileRule'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:15:31 Unresolved reference 'BaselineProfileRule'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:24:13 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:25:17 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:25:42 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:26:17 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:26:42 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:30:9 Unresolved reference 'pressHome'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:31:9 Unresolved reference 'startActivityAndWait'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:34:9 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:35:9 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:36:9 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:39:9 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:45:9 Unresolved reference 'device'.
+e: file:///G:/GITHUB/barrioteca-android-app-v2/baselineprofile/src/main/java/com/lebeche/barrioteca/baselineprofile/BaselineProfileGenerator.kt:46:9 Unresolved reference 'device'.
+
+> Task :baselineprofile:compileBenchmarkReleaseKotlin FAILED
+> Task :baselineprofile:mergeExtDexBenchmarkRelease
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':baselineprofile:compileBenchmarkReleaseKotlin' (registered by plugin 'com.android.internal.test').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 19s
+16 actionable tasks: 16 executed

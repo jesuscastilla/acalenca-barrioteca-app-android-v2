@@ -38,5 +38,10 @@ private val AppShapes = Shapes(
 
 @Composable
 fun BarriotecaTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = LightColors, shapes = AppShapes, content = content)
+    MaterialTheme(
+        colorScheme = LightColors,
+        typography = AppTypography,
+        shapes = AppShapes,
+        content = content
+    )
 }

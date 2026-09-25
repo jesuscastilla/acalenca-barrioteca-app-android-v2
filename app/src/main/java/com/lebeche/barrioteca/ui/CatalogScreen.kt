@@ -38,7 +38,7 @@ import com.lebeche.barrioteca.data.SlmsApi
 import com.lebeche.barrioteca.data.parseCatalog
 
 @Composable
-fun CatalogScreen(member: Member) {
+fun CatalogScreen(member: Member?) {
     var books by remember { mutableStateOf<List<CatalogBook>>(emptyList()) }
     var loading by remember { mutableStateOf(true) }
     var query by remember { mutableStateOf("") }

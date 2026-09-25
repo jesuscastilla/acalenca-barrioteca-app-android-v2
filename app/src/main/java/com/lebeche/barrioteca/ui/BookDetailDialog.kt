@@ -41,7 +41,7 @@ import com.lebeche.barrioteca.data.SlmsApi
 import kotlinx.coroutines.launch
 
 @Composable
-fun BookDetailDialog(book: CatalogBook, member: Member, onDismiss: () -> Unit) {
+fun BookDetailDialog(book: CatalogBook, member: Member?, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var borrowing by remember { mutableStateOf(false) }
@@ -101,28 +101,36 @@ fun BookDetailDialog(book: CatalogBook, member: Member, onDismiss: () -> Unit) {
                 val code = book.itemCode.ifBlank { book.isbn }
                 if (book.status == "disponible" && code.isNotBlank()) {
                     Spacer(Modifier.height(16.dp))
-                    Button(
-                        onClick = {
-                            scope.launch {
-                                borrowing = true
-                                val res = SlmsApi.performAction("prestamo", code, member.id)
-                                borrowing = false
-                                Toast.makeText(
-                                    context,
-                                    res.message
-                                        ?: if (res.success) "Préstamo realizado" else "No se pudo prestar",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                if (res.success) onDismiss()
+                    if (member == null) {
+                        Text(
+                            "Inicia sesión como socia para pedir este libro",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        Button(
+                            onClick = {
+                                scope.launch {
+                                    borrowing = true
+                                    val res = SlmsApi.performAction("prestamo", code, member.id)
+                                    borrowing = false
+                                    Toast.makeText(
+                                        context,
+                                        res.message
+                                            ?: if (res.success) "Préstamo realizado" else "No se pudo prestar",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    if (res.success) onDismiss()
+                                }
+                            },
+                            enabled = !borrowing,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            if (borrowing) {
+                                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                            } else {
+                                Text("Pedir este libro")
                             }
-                        },
-                        enabled = !borrowing,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        if (borrowing) {
-                            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                        } else {
-                            Text("Pedir este libro")
                         }
                     }
                 }

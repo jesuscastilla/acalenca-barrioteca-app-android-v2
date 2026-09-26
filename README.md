@@ -46,8 +46,10 @@ Salidas:
   `signing.keystore` (`my-key-alias`).
   El keystore y `keystore.properties` ya están copiados localmente (NO versionados en Git).
 
-## Últimos cambios (v3.2.5, Code 43)
+## Últimos cambios
 
+- Icono del launcher sin la ampliación (`<inset -20dp>` eliminado): se veía recortado/ampliado.
+- Tema alineado con la carta de color de Lebeche (azul `#3B758B` como primario, `#A9D9ED` container, `#26373E` on-container y ámbar `#E8A33D` como acento).
 - Sinopsis del catálogo **bajo demanda** (`action=book-detail&id=`) al abrir el detalle de un libro.
 - Refresco automático de catálogo y préstamos tras prestar/devolver (`RefreshSignal`).
 - Contacto por correo a prueba de fallos + `<queries>` mailto en el manifest.

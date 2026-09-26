@@ -19,16 +19,14 @@ object Notifications {
     const val CHANNEL_ID = "cambios"
 
     fun ensureChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Cambios de la biblioteca",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "Avisos de préstamos, vencimientos y novedades del catálogo"
-            }
-            context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            "Cambios de la biblioteca",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "Avisos de préstamos, vencimientos y novedades del catálogo"
         }
+        context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
 
     fun canNotify(context: Context): Boolean {
@@ -61,6 +59,11 @@ object Notifications {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
-        NotificationManagerCompat.from(context).notify(id, notification)
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            NotificationManagerCompat.from(context).notify(id, notification)
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            @Suppress("MissingPermission")
+            NotificationManagerCompat.from(context).notify(id, notification)
+        }
     }
 }

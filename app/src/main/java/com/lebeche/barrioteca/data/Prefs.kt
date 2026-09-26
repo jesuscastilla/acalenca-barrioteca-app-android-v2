@@ -1,6 +1,7 @@
 package com.lebeche.barrioteca.data
 
 import android.content.Context
+import androidx.core.content.edit
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -21,7 +22,7 @@ object Prefs {
             put("expire_date", m.expireDate ?: JSONObject.NULL)
             put("is_expired", m.isExpired)
         }
-        sp(ctx).edit().putString("member", json.toString()).apply()
+        sp(ctx).edit { putString("member", json.toString()) }
     }
 
     fun member(ctx: Context): Member? {
@@ -38,7 +39,7 @@ object Prefs {
     }
 
     fun clearMember(ctx: Context) {
-        sp(ctx).edit().remove("member").apply()
+        sp(ctx).edit { remove("member") }
     }
 
     // ── Historial de operaciones ──────────────────────────────────
@@ -67,11 +68,11 @@ object Prefs {
         val all = logs(ctx).toMutableList()
         all.add(0, log)
         if (all.size > 100) all.subList(100, all.size).clear()
-        sp(ctx).edit().putString("logs", logsToJson(all).toString()).apply()
+        sp(ctx).edit { putString("logs", logsToJson(all).toString()) }
     }
 
     fun clearLogs(ctx: Context) {
-        sp(ctx).edit().remove("logs").apply()
+        sp(ctx).edit { remove("logs") }
     }
 
     private fun logsToJson(list: List<TxLog>): JSONArray = JSONArray().apply {
@@ -105,7 +106,7 @@ object Prefs {
                 })
             }
         }
-        sp(ctx).edit().putString("loans_snapshot", arr.toString()).apply()
+        sp(ctx).edit { putString("loans_snapshot", arr.toString()) }
     }
 
     fun loansSnapshot(ctx: Context): List<Loan> {
@@ -129,7 +130,7 @@ object Prefs {
 
     // ── Instantánea del catálogo (para detectar libros nuevos) ────
     fun saveCatalogIds(ctx: Context, ids: Set<String>) {
-        sp(ctx).edit().putStringSet("catalog_ids", ids).apply()
+        sp(ctx).edit { putStringSet("catalog_ids", ids) }
     }
 
     fun catalogIds(ctx: Context): Set<String> =
@@ -140,13 +141,13 @@ object Prefs {
         sp(ctx).getString("due_$loanId", null)
 
     fun markNotifiedDue(ctx: Context, loanId: String, dueDate: String) {
-        sp(ctx).edit().putString("due_$loanId", dueDate).apply()
+        sp(ctx).edit { putString("due_$loanId", dueDate) }
     }
 
     fun notifiedMembership(ctx: Context, expireDate: String): Boolean =
         sp(ctx).getBoolean("member_$expireDate", false)
 
     fun markNotifiedMembership(ctx: Context, expireDate: String) {
-        sp(ctx).edit().putBoolean("member_$expireDate", true).apply()
+        sp(ctx).edit { putBoolean("member_$expireDate", true) }
     }
 }

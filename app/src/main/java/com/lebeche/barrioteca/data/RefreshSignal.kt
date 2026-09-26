@@ -1,7 +1,7 @@
 package com.lebeche.barrioteca.data
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 
 /**
@@ -11,9 +11,9 @@ import androidx.compose.runtime.setValue
  * vuelven a ejecutar y recargan los datos desde SLiMS.
  */
 object RefreshSignal {
-    var catalogVersion by mutableStateOf(0)
+    var catalogVersion by mutableIntStateOf(0)
         private set
-    var loansVersion by mutableStateOf(0)
+    var loansVersion by mutableIntStateOf(0)
         private set
 
     fun bumpCatalog() { catalogVersion++ }

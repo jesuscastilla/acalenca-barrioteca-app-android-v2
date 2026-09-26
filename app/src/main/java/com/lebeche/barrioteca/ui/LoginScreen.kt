@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,8 +34,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import com.lebeche.barrioteca.data.Member
 import com.lebeche.barrioteca.data.Prefs
@@ -82,10 +81,10 @@ fun LoginScreen(onLoggedIn: (Member) -> Unit) {
             IconButton(onClick = { scanning = false }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
-            ScannerCapture(onCode = { code ->
+            ScannerCapture(overlayText = "¡Estás a punto de entrar en un universo de conocimiento!") { code ->
                 scanning = false
                 doLogin(code)
-            })
+            }
         }
         return
     }
@@ -169,13 +168,13 @@ fun LoginScreen(onLoggedIn: (Member) -> Unit) {
         Spacer(Modifier.height(32.dp))
 
         TextButton(onClick = {
-            Toast.makeText(context, "Contacta con la asamblea para recuperar tu ID", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Contacta con Lebeche para recuperar tu ID", Toast.LENGTH_LONG).show()
             val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:monderas@corrientelebeche.es")
+                data = "mailto:monderas@corrientelebeche.es".toUri()
             }
             try {
                 context.startActivity(intent)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Ignore if no email client is available
             }
         }) {

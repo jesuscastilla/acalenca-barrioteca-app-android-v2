@@ -18,6 +18,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.widget.Toast
 import android.content.Intent
+import androidx.core.content.edit
 import com.google.android.play.core.appupdate.AppUpdateOptions
 
 class MainActivity : ComponentActivity() {
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 try {
                     val options = AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
                     appUpdateManager.startUpdateFlowForResult(appUpdateInfo, updateLauncher, options)
-                    getSharedPreferences("barrioteca_prefs", MODE_PRIVATE).edit().clear().apply()
+                    getSharedPreferences("barrioteca_prefs", MODE_PRIVATE).edit { clear() }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

@@ -72,7 +72,7 @@ fun DashboardScreen(member: Member) {
                 member.expireDate?.let {
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Carné de socia caduca el ${formatDate(it)}",
+                        "Tu carné de socia caduca el ${formatDate(it)}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -80,7 +80,7 @@ fun DashboardScreen(member: Member) {
                 if (member.isExpired) {
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Tu carné ha caducado. Pásate por la biblioteca para renovarlo.",
+                        "Tu carné ha caducado. Pásate por Acalencá para renovarlo.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error
                     )

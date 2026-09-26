@@ -1,8 +1,8 @@
 package com.lebeche.barrioteca.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -95,11 +95,11 @@ fun SettingsScreen(member: Member, onLogout: () -> Unit) {
         OutlinedButton(
             onClick = {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
-                    data = Uri.parse("mailto:monderas@corrientelebeche.es")
+                    data = "mailto:monderas@corrientelebeche.es".toUri()
                 }
                 try {
                     context.startActivity(intent)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     Toast.makeText(
                         context,
                         "No hay ninguna app de correo configurada.",

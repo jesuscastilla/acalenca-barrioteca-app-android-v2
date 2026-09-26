@@ -92,10 +92,10 @@ fun ScanScreen(member: Member) {
             IconButton(onClick = { scanning = false }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
-            ScannerCapture(onCode = { code ->
+            ScannerCapture(overlayText = "Escanea el código de barras o ISBN del libro") { code ->
                 scanning = false
                 runAction(code)
-            })
+            }
         }
         return
     }

@@ -1,7 +1,6 @@
 package com.lebeche.barrioteca.ui
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 
 @Composable
 fun AboutScreen() {
@@ -43,7 +43,7 @@ fun AboutScreen() {
         Spacer(Modifier.height(24.dp))
 
         Text(
-            "La Barrioteca Acalencá es una iniciativa para fomentar la lectura y el intercambio cultural. Nuestro objetivo es crear una biblioteca autogestionada, accesible para todas las vecinas y vecinos.",
+            "La Barrioteca Acalencá es una iniciativa para fomentar la lectura y el intercambio cultural. Nuestro objetivo es crear una biblioteca autogestionada, accesible para todas las vecinas.",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -60,7 +60,7 @@ fun AboutScreen() {
 
         Button(
             onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.corrientelebeche.es"))
+                val intent = Intent(Intent.ACTION_VIEW, "https://www.corrientelebeche.es".toUri())
                 context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()

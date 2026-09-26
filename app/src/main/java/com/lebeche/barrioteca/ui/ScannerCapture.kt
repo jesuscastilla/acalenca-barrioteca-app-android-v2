@@ -5,7 +5,9 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -34,8 +36,9 @@ import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
 
 /** Vista previa de cámara con detección de QR/código de barras (ML Kit). */
+@OptIn(ExperimentalGetImage::class)
 @Composable
-fun ScannerCapture(onCode: (String) -> Unit) {
+fun ScannerCapture(overlayText: String? = null, onCode: (String) -> Unit) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -65,9 +68,10 @@ fun ScannerCapture(onCode: (String) -> Unit) {
 
     var delivered by remember { mutableStateOf(false) }
 
-    AndroidView(
-        modifier = Modifier.fillMaxSize(),
-        factory = { ctx ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { ctx ->
             val previewView = PreviewView(ctx)
             val executor = Executors.newSingleThreadExecutor()
             val future = ProcessCameraProvider.getInstance(ctx)
@@ -128,4 +132,6 @@ fun ScannerCapture(onCode: (String) -> Unit) {
             previewView
         }
     )
+        ScannerOverlay(text = overlayText)
+    }
 }

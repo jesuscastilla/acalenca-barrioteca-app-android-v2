@@ -140,4 +140,11 @@ publishing {
     }
 }
 
+// La publicación a Maven debe esperar a que exista el APK release: sin esta
+// dependencia, Gradle valida el artefacto antes de que `assembleRelease` lo
+// genere y `publish` falla con "artifact file does not exist".
+tasks.withType(org.gradle.api.publish.maven.tasks.PublishToMavenRepository).configureEach {
+    dependsOn 'assembleRelease'
+}
+
 

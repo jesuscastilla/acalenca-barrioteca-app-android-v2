@@ -1,0 +1,9 @@
+# Normaliza los saltos de línea a LF para que el auto-bump del CI (Python en
+# Linux) no genere diffs masivos por CRLF/LF en cada compilación.
+* text=auto
+
+*.gradle text eol=lf
+*.kt text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.properties text eol=lf

@@ -2,6 +2,11 @@ package com.lebeche.barrioteca.data
 
 import com.lebeche.barrioteca.BuildConfig
 import org.json.JSONArray
+import org.json.JSONObject
+
+/** Convierte una ruta de imagen relativa (SLiMS) en una URL absoluta. */
+private fun fullImageUrl(path: String): String =
+    if (path.isNotEmpty() && !path.startsWith("http")) BuildConfig.SITE_BASE_URL + path else path
 
 /** Convierte la respuesta `member-loans` (array JSON) en una lista de préstamos. */
 fun parseLoans(list: JSONArray?): List<Loan> {
@@ -9,12 +14,6 @@ fun parseLoans(list: JSONArray?): List<Loan> {
     return buildList {
         for (i in 0 until list.length()) {
             val j = list.optJSONObject(i) ?: continue
-            val imagePath = j.optString("image")
-            val fullImageUrl = if (imagePath.isNotEmpty() && !imagePath.startsWith("http")) {
-                BuildConfig.SITE_BASE_URL + imagePath
-            } else {
-                imagePath
-            }
             add(
                 Loan(
                     loanId = j.optString("loan_id"),
@@ -23,7 +22,7 @@ fun parseLoans(list: JSONArray?): List<Loan> {
                     dueDate = j.optString("due_date"),
                     title = j.optString("title", "Título no disponible"),
                     isbn = j.optString("isbn"),
-                    image = fullImageUrl
+                    image = fullImageUrl(j.optString("image"))
                 )
             )
         }
@@ -36,12 +35,6 @@ fun parseCatalog(list: JSONArray?): List<CatalogBook> {
     return buildList {
         for (i in 0 until list.length()) {
             val j = list.optJSONObject(i) ?: continue
-            val imagePath = j.optString("image")
-            val fullImageUrl = if (imagePath.isNotEmpty() && !imagePath.startsWith("http")) {
-                BuildConfig.SITE_BASE_URL + imagePath
-            } else {
-                imagePath
-            }
             add(
                 CatalogBook(
                     id = j.optString("id"),
@@ -49,11 +42,22 @@ fun parseCatalog(list: JSONArray?): List<CatalogBook> {
                     author = j.optString("author", "Autora Desconocida"),
                     isbn = j.optString("isbn"),
                     status = j.optString("status", "disponible"),
-                    image = fullImageUrl,
+                    image = fullImageUrl(j.optString("image")),
                     notes = j.optString("notes"),
                     itemCode = j.optString("item_code")
                 )
             )
         }
     }
+}
+
+/** Convierte la respuesta `book-detail` (`{status, data}`) en un BookDetail. */
+fun parseBookDetail(data: JSONObject?): BookDetail? {
+    if (data == null) return null
+    return BookDetail(
+        id = data.optString("id"),
+        title = data.optString("title"),
+        notes = data.optString("notes"),
+        image = fullImageUrl(data.optString("image"))
+    )
 }

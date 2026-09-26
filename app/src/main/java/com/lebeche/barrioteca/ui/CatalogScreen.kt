@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lebeche.barrioteca.data.CatalogBook
 import com.lebeche.barrioteca.data.Member
+import com.lebeche.barrioteca.data.RefreshSignal
 import com.lebeche.barrioteca.data.SlmsApi
 import com.lebeche.barrioteca.data.parseCatalog
 
@@ -44,7 +45,7 @@ fun CatalogScreen(member: Member?) {
     var query by remember { mutableStateOf("") }
     var selected by remember { mutableStateOf<CatalogBook?>(null) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(RefreshSignal.catalogVersion) {
         loading = true
         val res = SlmsApi.catalogList()
         books = if (res.success) parseCatalog(res.list) else emptyList()

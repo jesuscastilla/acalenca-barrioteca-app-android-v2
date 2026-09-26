@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Reglas de backup para Android <= 12 (fullBackupContent). Excluimos la sesión
+     de socia para no copiar datos personales a la nube/transferencia. -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="barrioteca_prefs.xml"/>
+</full-backup-content>

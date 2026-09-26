@@ -32,6 +32,7 @@ $env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
 $env:ANDROID_HOME='C:\Users\jesus\AppData\Local\Android\Sdk'
 .\gradlew.bat :app:assembleDebug        # APK de desarrollo
 .\gradlew.bat :app:assembleRelease     # APK firmado (requiere keystore.properties)
+.\gradlew.bat :app:testDebugUnitTest   # Tests unitarios JVM
 ```
 
 Salidas:
@@ -41,10 +42,19 @@ Salidas:
 ## Decisiones ya tomadas
 
 - Publicación como **actualización** de la app actual: `applicationId com.lebeche.barrioteca`
-  + `versionCode 35` y firma con el mismo `signing.keystore` (`my-key-alias`).
+  + `versionCode 43` (auto-incrementado por el CI en cada push) y firma con el mismo
+  `signing.keystore` (`my-key-alias`).
   El keystore y `keystore.properties` ya están copiados localmente (NO versionados en Git).
 
-## Últimos cambios (v3.0.0, Code 35)
+## Últimos cambios (v3.2.5, Code 43)
+
+- Sinopsis del catálogo **bajo demanda** (`action=book-detail&id=`) al abrir el detalle de un libro.
+- Refresco automático de catálogo y préstamos tras prestar/devolver (`RefreshSignal`).
+- Contacto por correo a prueba de fallos + `<queries>` mailto en el manifest.
+- Manifest: `dataExtractionRules`/`fullBackupContent` (excluyen la sesión de socia de backups) y `enableOnBackInvokedCallback`.
+- Tests unitarios JVM (`ParsersTest`, `DateUtilsTest`) y CI con auto-bump de versión + publicación del APK en GitHub Packages.
+
+## Cambios anteriores (v3.0.0, Code 35)
 
 - Modificado el diseño del icono (`ic_launcher.xml` con `<inset>`) para que se muestre centrado y sin letras.
 - Añadida lógica en `MainActivity.kt` (Google Play In-App Updates) para forzar la actualización de la app si hay una nueva versión (Inmediata).

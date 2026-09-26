@@ -25,3 +25,8 @@ app/build/
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# Logs de build locales (no deben versionarse)
+*.log
+*-log.txt
+bp*.txt

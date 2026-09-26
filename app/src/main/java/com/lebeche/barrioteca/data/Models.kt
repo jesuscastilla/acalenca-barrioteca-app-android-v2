@@ -43,3 +43,11 @@ data class TxLog(
     val user: String?,
     val bookTitle: String?
 )
+
+/** Detalle de un título (sinopsis completa) devuelto por `action=book-detail`. */
+data class BookDetail(
+    val id: String,
+    val title: String,
+    val notes: String,
+    val image: String
+)

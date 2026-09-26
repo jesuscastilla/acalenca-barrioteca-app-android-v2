@@ -114,4 +114,8 @@ object SlmsApi {
         }
         return post("perform-action", body)
     }
+
+    /** Detalle de un único título (sinopsis completa + portada). */
+    suspend fun bookDetail(bookId: String): ApiResult =
+        get("book-detail", mapOf("id" to bookId))
 }

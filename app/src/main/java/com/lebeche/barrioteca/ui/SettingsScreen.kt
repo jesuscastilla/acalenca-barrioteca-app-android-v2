@@ -97,7 +97,15 @@ fun SettingsScreen(member: Member, onLogout: () -> Unit) {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("mailto:monderas@corrientelebeche.es")
                 }
-                context.startActivity(intent)
+                try {
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        "No hay ninguna app de correo configurada.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {

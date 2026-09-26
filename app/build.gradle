@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.plugin.compose'
+    id 'maven-publish'
 }
 
 // Credenciales de firma desde keystore.properties (NO versionado en Git)
@@ -18,8 +19,8 @@ android {
         applicationId 'com.lebeche.barrioteca'
         minSdk 28
         targetSdk 36
-        versionCode 42
-        versionName '3.2.4'
+        versionCode 43
+        versionName '3.2.5'
 
         // Dominio principal y URL del proxy PHP que expone la API de SLiMS.
         // Se centralizan aqui para no hardcodearlas por todo el codigo.
@@ -94,6 +95,11 @@ dependencies {
 
     // Google Play In-App Updates
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
+    // Tests unitarios (JVM)
+    testImplementation 'junit:junit:4.13.2'
+    // org.json real para los tests (en Android lo provee la plataforma)
+    testImplementation 'org.json:json:20240303'
 }
 
 // Evita INSTALL_BASELINE_PROFILE_FAILED al instalar el build release en emuladores:
@@ -106,6 +112,31 @@ configurations.configureEach {
 tasks.configureEach {
     if (name.contains("ArtProfile") || name.contains("StartupProfile")) {
         enabled = false
+    }
+}
+
+// Publica el APK firmado en GitHub Packages (Maven). Se activa con `./gradlew publish`.
+// El release.yml ejecuta `assembleRelease publish` tras firmar el APK.
+publishing {
+    repositories {
+        maven {
+            name = 'GitHubPackages'
+            url = uri('https://maven.pkg.github.com/jesuscastilla/acalenca-barrioteca-app-android-v2')
+            credentials {
+                username = System.getenv('GITHUB_ACTOR') ?: 'local'
+                password = System.getenv('GITHUB_TOKEN') ?: 'local'
+            }
+        }
+    }
+    publications {
+        releaseApk(MavenPublication) {
+            groupId = 'com.lebeche.barrioteca'
+            artifactId = 'barrioteca'
+            version = android.defaultConfig.versionName
+            artifact("$buildDir/outputs/apk/release/app-release.apk") {
+                extension 'apk'
+            }
+        }
     }
 }
 

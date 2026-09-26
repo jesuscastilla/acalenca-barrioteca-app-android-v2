@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lebeche.barrioteca.data.Loan
 import com.lebeche.barrioteca.data.Member
+import com.lebeche.barrioteca.data.RefreshSignal
 import com.lebeche.barrioteca.data.SlmsApi
 import com.lebeche.barrioteca.data.parseLoans
 import java.text.SimpleDateFormat
@@ -37,7 +38,7 @@ fun DashboardScreen(member: Member) {
     var loans by remember { mutableStateOf<List<Loan>>(emptyList()) }
     var loading by remember { mutableStateOf(true) }
 
-    LaunchedEffect(member.id) {
+    LaunchedEffect(member.id, RefreshSignal.loansVersion) {
         loading = true
         val res = SlmsApi.memberLoans(member.id)
         loans = if (res.success) parseLoans(res.list) else emptyList()

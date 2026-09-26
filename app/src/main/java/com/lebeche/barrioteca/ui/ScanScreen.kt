@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lebeche.barrioteca.data.Member
 import com.lebeche.barrioteca.data.Prefs
+import com.lebeche.barrioteca.data.RefreshSignal
 import com.lebeche.barrioteca.data.SlmsApi
 import com.lebeche.barrioteca.data.TxLog
 import java.text.SimpleDateFormat
@@ -58,6 +59,10 @@ fun ScanScreen(member: Member) {
             busy = true
             val res = SlmsApi.performAction(action, code, if (action == "prestamo") member.id else null)
             busy = false
+            if (res.success) {
+                RefreshSignal.bumpCatalog()
+                RefreshSignal.bumpLoans()
+            }
             Prefs.addLog(
                 context,
                 TxLog(

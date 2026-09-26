@@ -1,4 +1,0 @@
-> Task :baselineprofile:assembleAndroidTest UP-TO-DATE
-
-BUILD SUCCESSFUL in 1s
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html

@@ -6,10 +6,6 @@ import com.lebeche.barrioteca.data.Prefs
 import com.lebeche.barrioteca.data.SlmsApi
 import com.lebeche.barrioteca.data.parseLoans
 import com.lebeche.barrioteca.notif.Notifications
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.concurrent.TimeUnit
 
 /**
  * Compara el estado de SLiMS con la última instantánea guardada y notifica
@@ -49,7 +45,7 @@ object SyncEngine {
                 Prefs.markNotifiedMembership(context, "expired")
             }
         } else if (expire != null) {
-            val days = daysUntil(expire)
+            val days = DateUtils.daysUntil(expire)
             if (days != null && days in 0..7 && !Prefs.notifiedMembership(context, expire)) {
                 val msg = if (days == 0) "Tu carné de socia caduca hoy."
                 else "Tu carné de socia caduca en $days día(s)."
@@ -73,7 +69,7 @@ object SyncEngine {
             Notifications.notify(
                 context,
                 "Nuevo préstamo",
-                "${l.title} — vence el ${formatDate(l.dueDate)}.",
+                "${l.title} — vence el ${DateUtils.formatDate(l.dueDate)}.",
                 idFor(l.loanId)
             )
         }
@@ -85,7 +81,7 @@ object SyncEngine {
 
         // Préstamos próximos a vencer (una sola vez por préstamo y fecha)
         for (l in loans) {
-            val days = daysUntil(l.dueDate) ?: continue
+            val days = DateUtils.daysUntil(l.dueDate) ?: continue
             if (days in -2..2) {
                 if (Prefs.notifiedDue(context, l.loanId) != l.dueDate) {
                     val msg = when {
@@ -123,26 +119,4 @@ object SyncEngine {
     }
 
     private fun idFor(loanId: String): Int = (loanId.hashCode() and 0x7fffff) + 3000
-
-    private fun daysUntil(dateStr: String): Int? {
-        if (dateStr.isBlank()) return null
-        return runCatching {
-            val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            val target = fmt.parse(dateStr.trim()) ?: return null
-            val today = Calendar.getInstance().apply {
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-            }.time
-            TimeUnit.DAYS.convert(target.time - today.time, TimeUnit.MILLISECONDS).toInt()
-        }.getOrNull()
-    }
-
-    private fun formatDate(dateStr: String): String {
-        return runCatching {
-            val d = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateStr.trim()) ?: return dateStr
-            SimpleDateFormat("d 'de' MMMM", Locale.forLanguageTag("es-ES")).format(d)
-        }.getOrDefault(dateStr)
-    }
 }

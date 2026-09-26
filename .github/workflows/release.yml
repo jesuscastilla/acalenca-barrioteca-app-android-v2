@@ -6,10 +6,92 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        run: |
+          export ANDROID_HOME=/usr/local/lib/android/sdk
+          export ANDROID_SDK_ROOT=$ANDROID_HOME
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          SDKMANAGER=$(ls "$ANDROID_HOME/cmdline-tools"/*/bin/sdkmanager 2>/dev/null | head -1)
+          yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" --install "platforms;android-36" "build-tools;36.0.0" > /dev/null 2>&1
+
+      # Regla del proyecto: subir el número de versión en CADA compilación.
+      # Incrementa versionCode y el parche de versionName en app/build.gradle.
+      - name: Bump version (code + name)
+        run: |
+          python3 - <<'PY'
+          import re
+          p = 'app/build.gradle'
+          s = open(p, encoding='utf-8').read()
+          code = int(re.search(r'versionCode (\d+)', s).group(1)) + 1
+          s = re.sub(r'versionCode \d+', f'versionCode {code}', s)
+          m = re.search(r"versionName '(\d+)\.(\d+)\.(\d+)'", s)
+          maj, minor, patch = map(int, m.groups())
+          new_name = f"{maj}.{minor}.{patch+1}"
+          s = re.sub(r"versionName '\d+\.\d+\.\d+'", f"versionName '{new_name}'", s)
+          open(p, 'w', encoding='utf-8').write(s)
+          print(f"VERSION_CODE={code}")
+          print(f"VERSION_NAME={new_name}")
+          PY
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/build.gradle
+          git commit -m "chore(release): bump version [skip ci]" || echo "No changes to commit"
+          git push origin main
+
+      - name: Decode signing keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > signing.keystore
+          printf 'storeFile=signing.keystore\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' "$KEYSTORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > keystore.properties
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build APK + AAB
+        run: chmod +x gradlew && ./gradlew assembleRelease bundleRelease --no-daemon
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: "Build ${{ github.run_number }}"
+          body: "Compilación automática firmada (versionCode/versionName incrementados)."
+          prerelease: true
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+
+  publish-packages:
+    runs-on: ubuntu-latest
+    needs: release
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -43,16 +125,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Build APK + AAB
-        run: chmod +x gradlew && ./gradlew assembleRelease bundleRelease --no-daemon
+      - name: Publish APK to GitHub Packages
+        run: chmod +x gradlew && ./gradlew assembleRelease publish --no-daemon
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: build-${{ github.run_number }}
-          name: "Build ${{ github.run_number }}"
-          body: "Compilación automática del commit ${{ github.sha }} (firmado)."
-          prerelease: true
-          files: |
-            app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab

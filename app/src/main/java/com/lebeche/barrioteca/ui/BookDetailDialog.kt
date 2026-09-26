@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,9 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
+import com.lebeche.barrioteca.data.BookDetail
 import com.lebeche.barrioteca.data.CatalogBook
 import com.lebeche.barrioteca.data.Member
+import com.lebeche.barrioteca.data.RefreshSignal
 import com.lebeche.barrioteca.data.SlmsApi
+import com.lebeche.barrioteca.data.parseBookDetail
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,6 +49,17 @@ fun BookDetailDialog(book: CatalogBook, member: Member?, onDismiss: () -> Unit) 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var borrowing by remember { mutableStateOf(false) }
+    var detail by remember { mutableStateOf<BookDetail?>(null) }
+    var detailLoading by remember { mutableStateOf(false) }
+
+    // La sinopsis ya no viene en catalog-list: se pide bajo demanda (book-detail).
+    LaunchedEffect(book.id) {
+        detailLoading = true
+        detail = parseBookDetail(SlmsApi.bookDetail(book.id).data)
+        detailLoading = false
+    }
+
+    val cover = book.image.ifBlank { detail?.image.orEmpty() }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surface) {
@@ -69,9 +84,9 @@ fun BookDetailDialog(book: CatalogBook, member: Member?, onDismiss: () -> Unit) 
                     }
                 }
 
-                if (book.image.isNotBlank()) {
+                if (cover.isNotBlank()) {
                     AsyncImage(
-                        model = book.image,
+                        model = cover,
                         contentDescription = book.title,
                         modifier = Modifier
                             .size(width = 100.dp, height = 140.dp)
@@ -92,11 +107,24 @@ fun BookDetailDialog(book: CatalogBook, member: Member?, onDismiss: () -> Unit) 
                 )
 
                 Spacer(Modifier.height(12.dp))
-                Text(
-                    book.notes.ifBlank { "Sinopsis no disponible para este libro." },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                if (detailLoading) {
+                    Row(
+                        Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp
+                        )
+                    }
+                } else {
+                    Text(
+                        detail?.notes?.takeIf { it.isNotBlank() }
+                            ?: "Sinopsis no disponible para este libro.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
                 val code = book.itemCode.ifBlank { book.isbn }
                 if (book.status == "disponible" && code.isNotBlank()) {
@@ -120,7 +148,11 @@ fun BookDetailDialog(book: CatalogBook, member: Member?, onDismiss: () -> Unit) 
                                             ?: if (res.success) "Préstamo realizado" else "No se pudo prestar",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    if (res.success) onDismiss()
+                                    if (res.success) {
+                                        RefreshSignal.bumpCatalog()
+                                        RefreshSignal.bumpLoans()
+                                        onDismiss()
+                                    }
                                 }
                             },
                             enabled = !borrowing,

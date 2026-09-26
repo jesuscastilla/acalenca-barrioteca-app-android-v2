@@ -33,7 +33,7 @@
 |---|---|---|
 | **Icono** | 512×512 px, PNG 32 bits (con alfa) | `play-store/icono-512.png` |
 | **Feature graphic** | 1024×500 px, PNG/JPG | `play-store/feature-graphic-1024x500.png` |
-| Capturas de pantalla | min 320 px, máx 3840 px (móvil 16:9 o 9:16) | ⏳ pendiente — capturar desde el emulador/dispositivo |
+| Capturas de pantalla | 1080×2400 px (móvil 9:16) | `play-store/captura-1-login.png` … `captura-7-proyecto.png` |
 
 > El icono definitivo (silueta monocroma sobre fondo blanco, sin texto) también está respaldado en:
 > - `G:\GITHUB\keystore-backup\barrioteca-android-app-v2\icono-launcher\`
@@ -116,10 +116,10 @@ La Barrioteca es un proyecto de la asociación Lebeche. ¡Hazte socia y particip
 
 ## 6. Checklist previo al envío
 
-- [ ] Compilar y descargar el `.aab` firmado de la última CI (release `build-N`).
-- [ ] Verificar que `versionCode`/`versionName` son mayores que los publicados.
-- [ ] Subir icono (`play-store/icono-512.png`) y feature graphic.
-- [ ] Capturar y subir **capturas de pantalla** (login, catálogo, detalle, dashboard).
+- [x] Compilar y descargar el `.aab` firmado de la última CI (release `build-N`).
+- [x] Verificar que `versionCode`/`versionName` son mayores que los publicados.
+- [x] Subir icono (`play-store/icono-512.png`) y feature graphic.
+- [x] Capturar y subir **capturas de pantalla** (login, catálogo, detalle, dashboard, escáner, ajustes, proyecto).
 - [ ] Rellenar **content rating** (cuestionario IARC): contenido general, sin violencia/sexo/apuestas.
 - [ ] Rellenar **Data Safety** (sección 5).
 - [ ] Confirmar **política de privacidad** accesible (URL de la sección 4).

@@ -20,6 +20,8 @@ import android.widget.Toast
 import android.content.Intent
 import androidx.core.content.edit
 import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.lebeche.barrioteca.data.Prefs
+import com.lebeche.barrioteca.ui.ThemeState
 
 class MainActivity : ComponentActivity() {
 
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeState.themeMode = Prefs.getThemeMode(this)
         requestNotificationPermission()
         checkForUpdate()
         setContent {

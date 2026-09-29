@@ -14,6 +14,12 @@ object Prefs {
 
     private fun sp(ctx: Context) = ctx.getSharedPreferences(FILE, Context.MODE_PRIVATE)
 
+    // ── Preferencias generales ────────────────────────────────────
+    fun getThemeMode(ctx: Context): Int = sp(ctx).getInt("theme_mode", 0) // 0=System, 1=Light, 2=Dark
+    fun setThemeMode(ctx: Context, mode: Int) {
+        sp(ctx).edit { putInt("theme_mode", mode) }
+    }
+
     // ── Socia activa ──────────────────────────────────────────────
     fun saveMember(ctx: Context, m: Member) {
         val json = JSONObject().apply {

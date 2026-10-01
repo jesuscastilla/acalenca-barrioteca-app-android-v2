@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
+// El CI (release.yml) auto-incrementa versionCode y el parche de versionName en cada build.
 // Credenciales de firma desde keystore.properties (NO versionado en Git)
 def keystorePropertiesFile = rootProject.file('keystore.properties')
 def keystoreProperties = new Properties()

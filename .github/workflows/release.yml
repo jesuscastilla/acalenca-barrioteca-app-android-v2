@@ -3,6 +3,14 @@ name: Build & Release
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'app/**'
+      - 'gradle/**'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'gradle.properties'
 
 permissions:
   contents: write
@@ -81,7 +89,7 @@ jobs:
           tag_name: build-${{ github.run_number }}
           name: "Build ${{ github.run_number }}"
           body: "Compilación automática firmada (versionCode/versionName incrementados)."
-          prerelease: true
+          prerelease: false
           files: |
             app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab

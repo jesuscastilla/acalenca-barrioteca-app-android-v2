@@ -7,6 +7,8 @@ keystore.properties
 
 # Configuracion local (maquina especifica)
 local.properties
+google-services.json
+app/google-services.json
 
 # Gradle
 .gradle/

@@ -19,10 +19,12 @@ Implementada en una primera versión funcional.
 - **Sincronización periódica con SLiMS** (WorkManager, cada 15 min) y
   **notificaciones locales** de cambios: caducidad de la membresía, préstamos
   nuevos, devoluciones, préstamos próximos a vencer y libros nuevos añadidos.
+- **Firebase Cloud Messaging (FCM)** preparado para recibir notificaciones push
+  enviadas desde el backend o la consola de Firebase.
 
 ### Stack
 Kotlin + Jetpack Compose (Material 3) · OkHttp + corrutinas · Coil (portadas) ·
-CameraX + ML Kit Barcode Scanning · WorkManager.
+CameraX + ML Kit Barcode Scanning · WorkManager · Firebase Cloud Messaging.
 
 ## Compilar
 
@@ -44,7 +46,7 @@ Salidas:
 - Publicación como **actualización** de la app actual: `applicationId com.lebeche.barrioteca`
   + `versionCode 43` (auto-incrementado por el CI en cada push) y firma con el mismo
   `signing.keystore` (`my-key-alias`).
-  El keystore y `keystore.properties` ya están copiados localmente (NO versionados en Git).
+  El keystore, `keystore.properties` y `app/google-services.json` ya están copiados localmente (NO versionados en Git).
 
 ## Últimos cambios
 

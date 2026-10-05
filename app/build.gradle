@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.plugin.compose'
     id 'maven-publish'
+    id 'com.google.gms.google-services'
 }
 
 // El CI (release.yml) auto-incrementa versionCode y el parche de versionName en cada build.
@@ -20,8 +21,8 @@ android {
         applicationId 'com.lebeche.barrioteca'
         minSdk 28
         targetSdk 37
-        versionCode 55
-        versionName '3.2.17'
+        versionCode 56
+        versionName '3.2.18'
 
         // Dominio principal y URL del proxy PHP que expone la API de SLiMS.
         // Se centralizan aqui para no hardcodearlas por todo el codigo.
@@ -96,6 +97,10 @@ dependencies {
 
     // Google Play In-App Updates
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:34.19.0')
+    implementation 'com.google.firebase:firebase-messaging'
 
     // Tests unitarios (JVM)
     testImplementation 'junit:junit:4.13.2'

@@ -20,6 +20,12 @@ object Prefs {
         sp(ctx).edit { putInt("theme_mode", mode) }
     }
 
+    fun saveFcmToken(ctx: Context, token: String) {
+        sp(ctx).edit { putString("fcm_token", token) }
+    }
+
+    fun fcmToken(ctx: Context): String? = sp(ctx).getString("fcm_token", null)
+
     // ── Socia activa ──────────────────────────────────────────────
     fun saveMember(ctx: Context, m: Member) {
         val json = JSONObject().apply {

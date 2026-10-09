@@ -42,7 +42,9 @@ jobs:
 
       # Regla del proyecto: subir el número de versión en CADA compilación.
       # Incrementa versionCode y el parche de versionName en app/build.gradle.
+      # Si el commit lleva "[no-bump]", se respeta la versión fijada a mano (p. ej. releases 5.0.0).
       - name: Bump version (code + name)
+        if: "!contains(github.event.head_commit.message, '[no-bump]')"
         run: |
           python3 - <<'PY'
           import re
@@ -60,6 +62,7 @@ jobs:
           PY
 
       - name: Commit version bump
+        if: "!contains(github.event.head_commit.message, '[no-bump]')"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

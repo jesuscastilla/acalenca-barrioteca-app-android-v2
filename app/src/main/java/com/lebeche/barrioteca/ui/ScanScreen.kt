@@ -1,6 +1,7 @@
 package com.lebeche.barrioteca.ui
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -86,6 +87,9 @@ fun ScanScreen(member: Member) {
             ).show()
         }
     }
+
+    // Back del sistema: sale del escáner y vuelve a la pantalla de préstamo/devolución.
+    BackHandler(enabled = scanning) { scanning = false }
 
     if (scanning) {
         Column(Modifier.fillMaxSize().statusBarsPadding()) {

@@ -6,7 +6,15 @@ backend: el proxy `api-proxy.php` que expone la API de SLiMS.
 
 ## Estado
 
-Implementada en una primera versión funcional.
+✅ **Disponible en producción** (Google Play). Publicada como **actualización** de la
+app existente (`applicationId com.lebeche.barrioteca`, misma firma `my-key-alias`).
+
+Cada push a `main` dispara el CI (`release.yml`), que:
+1. Auto-incrementa `versionCode` y el parche de `versionName`.
+2. Compila y firma el APK y el AAB.
+3. Publica el release en GitHub Releases y el APK en GitHub Packages.
+
+> Actualmente: `versionCode 57` / `versionName 3.2.19` (el CI lo incrementa en cada build).
 
 ### Funcionalidades
 - **Login de socia sin contraseña**: entrada manual del ID o **escaneo del carné
@@ -44,12 +52,15 @@ Salidas:
 ## Decisiones ya tomadas
 
 - Publicación como **actualización** de la app actual: `applicationId com.lebeche.barrioteca`
-  + `versionCode 43` (auto-incrementado por el CI en cada push) y firma con el mismo
-  `signing.keystore` (`my-key-alias`).
+  + `versionCode`/`versionName` auto-incrementados por el CI en cada push (actualmente `57`/`3.2.19`)
+  y firma con el mismo `signing.keystore` (`my-key-alias`).
   El keystore, `keystore.properties` y `app/google-services.json` ya están copiados localmente (NO versionados en Git).
 
 ## Últimos cambios
 
+- **Botón "Atrás" corregido**: ya no cierra/envía a segundo plano la app. Al pulsar Atrás en una
+  sección del menú vuelve a la sección principal (Inicio/Entrar) y, dentro del escáner, vuelve a la
+  pantalla anterior (login o préstamo/devolución) mediante `BackHandler`.
 - Icono del launcher sin la ampliación (`<inset -20dp>` eliminado): se veía recortado/ampliado.
 - Tema alineado con la carta de color de Lebeche (azul `#3B758B` como primario, `#A9D9ED` container, `#26373E` on-container y ámbar `#E8A33D` como acento).
 - Sinopsis del catálogo **bajo demanda** (`action=book-detail&id=`) al abrir el detalle de un libro.
@@ -64,6 +75,14 @@ Salidas:
 - Añadida lógica en `MainActivity.kt` (Google Play In-App Updates) para forzar la actualización de la app si hay una nueva versión (Inmediata).
 - Limpiadas las `SharedPreferences` al detectarse una nueva actualización para que fuerce a las usuarias a re-iniciar sesión.
 - Solucionado el problema con la carga de portadas (`Parsers.kt`) en el catálogo prefijando la URL base de la imagen.
+
+## Disponibilidad
+
+- **Google Play**: publicada como *Barrioteca Acalencá* (`com.lebeche.barrioteca`).
+- **Releases (APK + AAB)**: https://github.com/jesuscastilla/acalenca-barrioteca-app-android-v2/releases
+- **GitHub Packages (APK)**: https://github.com/jesuscastilla/acalenca-barrioteca-app-android-v2/packages
+- **Política de privacidad**: https://www.corrientelebeche.es/barrioteca/privacidad.html
+- **Ficha técnica Play**: `FICHA_TECNICA_GOOGLE_PLAY.md`
 
 ## Repositorio
 

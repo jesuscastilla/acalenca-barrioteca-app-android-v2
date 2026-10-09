@@ -1,5 +1,6 @@
 package com.lebeche.barrioteca.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -75,6 +76,9 @@ fun LoginScreen(onLoggedIn: (Member) -> Unit) {
             }
         }
     }
+
+    // Back del sistema: sale del escáner y vuelve al formulario de login.
+    BackHandler(enabled = scanning) { scanning = false }
 
     if (scanning) {
         Column(Modifier.fillMaxSize().statusBarsPadding()) {

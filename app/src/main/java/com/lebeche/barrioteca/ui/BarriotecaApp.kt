@@ -1,5 +1,6 @@
 package com.lebeche.barrioteca.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -50,6 +51,15 @@ fun BarriotecaApp() {
     
     var authTab by remember { mutableStateOf(AuthTab.Home) }
     var unauthTab by remember { mutableStateOf(UnauthTab.Login) }
+
+    // Back del sistema: si no estamos en la sección principal, vuelve a ella
+    // (Inicio/Entrar) en lugar de cerrar o enviar a segundo plano la app.
+    BackHandler(enabled = member != null && authTab != AuthTab.Home) {
+        authTab = AuthTab.Home
+    }
+    BackHandler(enabled = member == null && unauthTab != UnauthTab.Login) {
+        unauthTab = UnauthTab.Login
+    }
 
     Scaffold(
         topBar = {

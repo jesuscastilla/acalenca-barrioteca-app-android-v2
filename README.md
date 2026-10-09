@@ -14,7 +14,7 @@ Cada push a `main` dispara el CI (`release.yml`), que:
 2. Compila y firma el APK y el AAB.
 3. Publica el release en GitHub Releases y el APK en GitHub Packages.
 
-> Actualmente: `versionCode 57` / `versionName 3.2.19` (el CI lo incrementa en cada build).
+> Actualmente: `versionCode 58` / `versionName 3.2.20` (el CI lo incrementa en cada build).
 
 ### Funcionalidades
 - **Login de socia sin contraseña**: entrada manual del ID o **escaneo del carné
@@ -52,7 +52,7 @@ Salidas:
 ## Decisiones ya tomadas
 
 - Publicación como **actualización** de la app actual: `applicationId com.lebeche.barrioteca`
-  + `versionCode`/`versionName` auto-incrementados por el CI en cada push (actualmente `57`/`3.2.19`)
+  + `versionCode`/`versionName` auto-incrementados por el CI en cada push (actualmente `58`/`3.2.20`)
   y firma con el mismo `signing.keystore` (`my-key-alias`).
   El keystore, `keystore.properties` y `app/google-services.json` ya están copiados localmente (NO versionados en Git).
 
